@@ -131,7 +131,6 @@ int main(){
 		gunRect.x = gunPos.x - gunCentre.x;
 		gunRect.y = gunPos.y - gunCentre.y;
 
-
 		// end update
 
 		// start render
