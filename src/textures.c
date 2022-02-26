@@ -26,7 +26,8 @@ char loadTextures(SDL_Renderer *r)
 
 	setRect(&textures.playerRect, 0, 0, 16, 16);
 	setRect(&textures.planetRect, 16, 0, 16, 16);
-	setRect(&textures.arrowRect, 32, 0, 32, 16);
+	setRect(&textures.gunNeutralRect, 32, 0, 16, 16);
+	setRect(&textures.gunFiredRect, 48, 0, 16, 16);
 	setRect(&textures.bgRect, 64, 0, 16, 16);
 	return 0;
 }

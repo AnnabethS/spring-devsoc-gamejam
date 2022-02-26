@@ -5,8 +5,9 @@
 #include "vector.h"
 #include "physics.h"
 #include "level.h"
+#include <math.h>
 
-#define RESTITUTION 0.75
+#define RESTITUTION 0.5
 #define MINVELSNAP 0.02
 
 local void accelerateRelativeToGravity(player_t* p, planet_t* planet)
@@ -14,7 +15,7 @@ local void accelerateRelativeToGravity(player_t* p, planet_t* planet)
 	vec2f diff;
 	vec2fDiff(&diff, &p->pos, &planet->pos);
 	float dist = vec2fMagnitude(&diff);
-	double force = 0.005 * ((double)planet->mass / (double)dist);
+	double force = ((double)planet->mass / (double)pow(dist, 2));
 	vec2f acceleration;
 	vec2fScalarProduct(&acceleration, &diff, force);
 	vec2fAdd(&p->vel, &p->vel, &acceleration);

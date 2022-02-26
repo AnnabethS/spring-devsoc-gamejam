@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_scancode.h>
 #include "level.h"
@@ -44,10 +45,20 @@ int main(){
 
     player_t player;
     initPlayer(&player, 200, 200, 2);
-    loadLevel(0);
+    //loadLevel(0);
     
     char running = 1;
     next_tick = SDL_GetTicks() + TICK_INTERVAL;
+
+    vec2f mousePos = {0};
+
+    //in degrees
+    float mouseAngleToPlayer = 0;
+
+    SDL_Rect gunRect = {0,0,textures.gunNeutralRect.w*2,textures.gunNeutralRect.h*2};
+    SDL_Point gunCentre = {gunRect.w/2, gunRect.h/2};
+    
+    
     while(running)
     {
 	    // get input events
@@ -71,9 +82,25 @@ int main(){
 			    }
 		    }
 	    }
+	    int mouseX;
+	    int mouseY;
+
+	    SDL_GetMouseState(&mouseX, &mouseY);
+	    mousePos.x = (float) mouseX;
+	    mousePos.y = (float) mouseY;
+	    mouseAngleToPlayer = vec2fAngleDegrees(&player.pos, &mousePos);
+	    
 	    // start update
 
 	    updatePlayer(&player);
+	    vec2f gunPos = {0};
+	    vec2f gunOffset = {0};
+	    vec2fUnitVectorFromAngleDegrees(&gunOffset, mouseAngleToPlayer);
+	    vec2fScalarProduct(&gunOffset, &gunOffset, 20);
+	    vec2fAdd(&gunPos, &gunOffset, &player.pos);
+	    gunRect.x = gunPos.x - gunCentre.x;
+	    gunRect.y = gunPos.y - gunCentre.y;
+	    
 
 	    // end update
 	    
@@ -88,8 +115,15 @@ int main(){
 		    }
 	    }
 
-	    drawPlanet(renderer, currentLevel.planetListHead);
+	    planet_t* ptr = currentLevel.planetListHead;
+	    while (ptr != NULL)
+	    {
+			drawPlanet(renderer, ptr);
+			ptr = ptr->next;
+	    }
 	    drawPlayer(renderer, &player);
+
+	    SDL_RenderCopyEx(renderer, textures.sheet, &textures.gunNeutralRect, &gunRect, mouseAngleToPlayer, &gunCentre, SDL_FLIP_NONE);
 
 	    // end render
         SDL_RenderPresent(renderer);
