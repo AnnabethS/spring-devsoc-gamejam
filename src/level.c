@@ -14,8 +14,15 @@ local void loadNewPlanet(int x, int y, int mass)
 
 void loadLevel(int levelNum)
 {
-	loadNewPlanet(800, 450, 8);
-	loadNewPlanet(300, 700, 4);
+	switch(levelNum)
+	{
+	case 0:
+		loadNewPlanet(800, 450, 8);
+		loadNewPlanet(300, 700, 4);
+		currentLevel.maxBullets = 5;
+		break;
+	}
+	currentLevel.currentBullets = currentLevel.maxBullets;
 }
 
 void unloadLevel()

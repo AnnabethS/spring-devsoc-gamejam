@@ -5,6 +5,8 @@
 
 typedef struct{
 	planet_t* planetListHead;
+	int maxBullets;
+	int currentBullets;
 }level_t;
 
 extern level_t currentLevel;
