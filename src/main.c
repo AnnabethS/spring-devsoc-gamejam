@@ -83,6 +83,9 @@ int main(){
 	button_t winButton;
 	initButton(&winButton, renderer, SCREENWIDTH/2 - 150, SCREENHEIGHT/2 -50, 300, 100, "You win, press ENTER");
 
+	button_t lossButton;
+	initButton(&lossButton, renderer, SCREENWIDTH/2 - 300, SCREENHEIGHT/2 - 50, 600, 100, "Careful where you shoot! (R to restart)");
+
 	SDL_Color titleColor = {255,255,255,255};
 	SDL_Surface* titleSurface = TTF_RenderText_Solid(font, TITLETEXT, titleColor);
 	SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
@@ -133,6 +136,7 @@ int main(){
 				default:
 					break;
 				}
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				switch(event.button.button)
 				{
@@ -146,7 +150,7 @@ int main(){
 							vec2f force;
 							vec2fUnitVectorFromAngleDegrees(&force, mouseAngleToPlayer);
 							vec2fScalarProduct(&force, &force, -3);
-							vec2fAdd(&currentLevel.player.vel, &currentLevel.player.vel, &force);
+							vec2fAdd(&currentLevel.player.trueVel, &currentLevel.player.trueVel, &force);
 							currentLevel.currentBullets--;
 							bullet_t* bptr = currentLevel.bulletListHead;
 							initBullet(&currentLevel.bulletListHead, currentLevel.player.pos.x, currentLevel.player.pos.y, mouseAngleToPlayer);
@@ -161,11 +165,28 @@ int main(){
 							{
 								loadLevel(i);
 								screen = SCREEN_GAME;
+								break;
 							}
 							
 						}
 						break;
 					}
+					break;
+				case SDL_BUTTON_RIGHT:
+					if(screen == SCREEN_GAME)
+					{
+						currentLevel.gameSpeed = 0.2;
+						currentLevel.gameSlowed = 1;
+					}
+					break;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				if(screen == SCREEN_GAME &&
+				   event.button.button == SDL_BUTTON_RIGHT)
+				{
+					currentLevel.gameSpeed = 1;
+					currentLevel.gameSlowed = 0;
 				}
 			}
 		}
@@ -236,6 +257,7 @@ int main(){
 					else if (result == 2)
 					{ // dog hit :(
 						currentLevel.realPause = 1;
+						currentLevel.levelLost = 1;
 					}
 					bptr_prev = bptr;
 					bptr = bptr->next;
@@ -295,8 +317,16 @@ int main(){
 				bulletRect.x += 40;
 			}
 
+			SDL_Rect speedRect = {SCREENWIDTH-138, 10, 128, 128};
+			if(currentLevel.gameSlowed)
+				SDL_RenderCopy(renderer, textures.sheet, &textures.slowSpeedIndicator, &speedRect);
+			else
+				SDL_RenderCopy(renderer, textures.sheet, &textures.normalSpeedIndicator, &speedRect);
+
 			if(currentLevel.levelWon)
 				drawButton(renderer, &winButton);
+			if(currentLevel.levelLost)
+				drawButton(renderer, &lossButton);
 			break;
 		}
 		case SCREEN_MENU:

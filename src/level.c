@@ -89,8 +89,10 @@ void loadLevel(int levelNum)
 	currentLevel.currentBullets = currentLevel.maxBullets;
 	currentLevel.paused = 1;
 	currentLevel.gameSpeed = 1;
+	currentLevel.gameSlowed = 0;
 	currentLevel.levelNum = levelNum;
 	currentLevel.levelWon = 0;
+	currentLevel.levelLost = 0;
 	currentLevel.realPause = 0;
 	currentLevel.bulletListHead = NULL;
 }

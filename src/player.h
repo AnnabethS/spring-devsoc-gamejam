@@ -7,6 +7,7 @@
 typedef struct{
 	vec2f pos; // position of the centre of the player
 	vec2f vel; // down + right is positive
+	vec2f trueVel; // unscaled velocity
 	SDL_FRect rect; // rect used for drawing
 	float radius;
 }player_t;

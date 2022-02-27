@@ -18,8 +18,10 @@ typedef struct{
 	SDL_Rect flagRect;
 	float flagRadius;
 	char levelWon;
+	char levelLost;
 	char paused; //used when the player is stopping time
 	float gameSpeed; // used to slow down the game
+	char gameSlowed;
 	char realPause; // used when the game is done
 	player_t player;
 	int levelNum;

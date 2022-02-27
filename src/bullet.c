@@ -25,7 +25,9 @@ void initBullet(bullet_t** b, float x, float y, float angle)
 // return 2 on hit dog
 char updateBullet(bullet_t* b)
 {
-	vec2fAdd(&b->pos, &b->pos, &b->vel);
+	vec2f scaledVel;
+	vec2fScalarProduct(&scaledVel, &b->vel, currentLevel.gameSpeed);
+	vec2fAdd(&b->pos, &b->pos, &scaledVel);
 	if(b->pos.x < -50 || b->pos.x > 1970 || b->pos.y < -50 || b->pos.y > 1130)
 		return 1;
 	

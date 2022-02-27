@@ -19,7 +19,7 @@ local void accelerateRelativeToGravity(player_t* p, planet_t* planet)
 	double force = ((double)planet->mass / (double)pow(dist, 2));
 	vec2f acceleration;
 	vec2fScalarProduct(&acceleration, &diff, force);
-	vec2fAdd(&p->vel, &p->vel, &acceleration);
+	vec2fAdd(&p->trueVel, &p->trueVel, &acceleration);
 }
 
 local void recalculateRect(player_t* p)
@@ -30,6 +30,7 @@ local void recalculateRect(player_t* p)
 
 void updatePlayer(player_t* p)
 {
+	vec2fScalarProduct(&p->vel, &p->trueVel, currentLevel.gameSpeed);
 	planet_t* ptr = currentLevel.planetListHead;
 	while(ptr!= NULL)
 	{
@@ -52,6 +53,7 @@ void updatePlayer(player_t* p)
 		{
 			bounced = 1;
 			p->vel.x *= -RESTITUTION;
+			p->trueVel.x *= -RESTITUTION;
 			if(p->vel.x >= -MINVELSNAP && p->vel.x <= MINVELSNAP)
 				p->vel.x = 0;
 		}
@@ -59,6 +61,7 @@ void updatePlayer(player_t* p)
 		{
 			bounced = 1;
 			p->vel.y *= -RESTITUTION;
+			p->trueVel.y *= -RESTITUTION;
 			if(p->vel.y >= -MINVELSNAP && p->vel.y <= MINVELSNAP)
 				p->vel.y = 0;
 		}
@@ -66,6 +69,7 @@ void updatePlayer(player_t* p)
 		{
 			bounced = 1;
 			vec2fScalarProduct(&p->vel, &p->vel, -RESTITUTION);
+			vec2fScalarProduct(&p->trueVel, &p->trueVel, -RESTITUTION);
 			if(vec2fMagnitude(&p->vel) <= MINVELSNAP)
 			{
 				p->vel.x = 0;
@@ -100,6 +104,8 @@ void initPlayer(player_t* p, float x, float y, float textureScale)
 	p->pos.y = y;
 	p->vel.x = 0;
 	p->vel.y = 0;
+	p->trueVel.x = 0;
+	p->trueVel.y = 0;
 	p->rect.w = textures.playerRect.w * textureScale;
 	p->rect.h = textures.playerRect.h * textureScale;
 	p->radius = p->rect.w / 2;
