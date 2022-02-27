@@ -115,7 +115,7 @@ int main(){
 				switch(event.key.keysym.scancode)
 				{
 				case SDL_SCANCODE_ESCAPE:
-					if(SCREEN_GAME)
+					if(screen == SCREEN_GAME)
 					{
 						unloadLevel();
 						screen = SCREEN_MENU;
