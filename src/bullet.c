@@ -30,7 +30,7 @@ char updateBullet(bullet_t* b)
 	vec2fAdd(&b->pos, &b->pos, &scaledVel);
 	if(b->pos.x < -50 || b->pos.x > 1970 || b->pos.y < -50 || b->pos.y > 1130)
 		return 1;
-	
+
 	planet_t* ptr = currentLevel.planetListHead;
 	while (ptr != NULL)
 	{

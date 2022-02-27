@@ -40,12 +40,11 @@ int main(){
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	basicSetup(SCREENWIDTH, SCREENHEIGHT,
-			   (SDL_INIT_VIDEO|SDL_INIT_EVENTS|SDL_INIT_TIMER),
+			   (SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER),
 			   TITLETEXT, &window, &renderer);
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	TTF_Init();
-	//SDL_Surface* spriteSheetSurface = IMG_Load("res/spritesheet.png");
 	loadTextures(renderer);
 
 	font = TTF_OpenFont("res/Monoid-Regular.ttf", 20);
@@ -71,7 +70,7 @@ int main(){
 	button_t menuButtons[levelAmount];
 
 	int menuButtonOffset = (levelAmount*150)/2;
-	
+
 	for(int i=0; i < levelAmount; i++)
 	{
 		char text[10] = {0};
@@ -174,7 +173,6 @@ int main(){
 								screen = SCREEN_GAME;
 								break;
 							}
-							
 						}
 						break;
 					}
@@ -235,7 +233,7 @@ int main(){
 					currentLevel.dogRect.x = currentLevel.player.pos.x - 8;
 					currentLevel.dogRect.y = currentLevel.player.pos.y - 8;
 				}
-				
+
 				bullet_t* bptr_prev = NULL;
 				bullet_t* bptr = currentLevel.bulletListHead;
 				while(bptr != NULL)

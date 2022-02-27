@@ -82,7 +82,7 @@ void loadLevel(int levelNum)
 		break;
 	default:
 		printf("cannot load level %d, does not exist yet\n"
-		       "program will likely now segfault or something\n", levelNum);
+			   "program will likely now segfault or something\n", levelNum);
 		break;
 	}
 	currentLevel.playerHoldingDog = 0;
