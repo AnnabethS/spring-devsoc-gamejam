@@ -3,11 +3,13 @@
 
 #include "planet.h"
 #include "player.h"
+#include "bullet.h"
 
 typedef struct{
 	planet_t* planetListHead;
 	int maxBullets;
 	int currentBullets;
+	bullet_t* bulletListHead;
 	vec2f dogLocation;
 	SDL_Rect dogRect;
 	float dogRadius;

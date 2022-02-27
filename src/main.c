@@ -5,7 +5,9 @@
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_scancode.h>
+#include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_ttf.h>
+#include "bullet.h"
 #include "button.h"
 #include "level.h"
 #include "planet.h"
@@ -18,6 +20,8 @@
 
 #define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
+
+#define TITLETEXT "Literally just that bit from cowboy bebop where spike is floating around in space and he fires his gun and flies backwards towards the ship"
 
 #define TICK_INTERVAL 15
 
@@ -37,16 +41,14 @@ int main(){
 	SDL_Renderer* renderer;
 	basicSetup(SCREENWIDTH, SCREENHEIGHT,
 			   (SDL_INIT_VIDEO|SDL_INIT_EVENTS|SDL_INIT_TIMER),
-			   "Literally just that bit from cowboy bebop where spike is floating "
-			   "around in space and he shoots his gun and flies back",
-			   &window, &renderer);
+			   TITLETEXT, &window, &renderer);
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	TTF_Init();
 	//SDL_Surface* spriteSheetSurface = IMG_Load("res/spritesheet.png");
 	loadTextures(renderer);
 
-	font = TTF_OpenFont("res/Monoid-Regular.ttf", 16);
+	font = TTF_OpenFont("res/Monoid-Regular.ttf", 20);
 
 	SDL_RenderClear(renderer);
 	SDL_RenderPresent(renderer);
@@ -65,19 +67,30 @@ int main(){
 	const u8 gunFiredFrames = 10;
 	u8 framesSinceGunFired = 0;
 
-	int levelAmount = 2;
+	int levelAmount = 5;
 	button_t menuButtons[levelAmount];
 
+	int menuButtonOffset = (levelAmount*150)/2;
+	
 	for(int i=0; i < levelAmount; i++)
 	{
 		char text[10] = {0};
 		sprintf(text, "Level %d", (i+1));
-		initButton(&menuButtons[i], renderer, 50+(i*150), 50, 100, 50, text);
+		initButton(&menuButtons[i], renderer, (SCREENWIDTH/2)-menuButtonOffset+(i*150), (SCREENHEIGHT/2)-(25), 100, 50, text);
 	}
 
 
 	button_t winButton;
 	initButton(&winButton, renderer, SCREENWIDTH/2 - 150, SCREENHEIGHT/2 -50, 300, 100, "You win, press ENTER");
+
+	SDL_Color titleColor = {255,255,255,255};
+	SDL_Surface* titleSurface = TTF_RenderText_Solid(font, TITLETEXT, titleColor);
+	SDL_Texture* titleTexture = SDL_CreateTextureFromSurface(renderer, titleSurface);
+	SDL_FreeSurface(titleSurface);
+	SDL_Rect titleRect;
+	SDL_QueryTexture(titleTexture, NULL, NULL, &titleRect.w, &titleRect.h);
+	titleRect.x = SCREENWIDTH/2 - (titleRect.w/2);
+	titleRect.y = 50;
 
 	while(running)
 	{
@@ -135,6 +148,9 @@ int main(){
 							vec2fScalarProduct(&force, &force, -3);
 							vec2fAdd(&currentLevel.player.vel, &currentLevel.player.vel, &force);
 							currentLevel.currentBullets--;
+							bullet_t* bptr = currentLevel.bulletListHead;
+							initBullet(&currentLevel.bulletListHead, currentLevel.player.pos.x, currentLevel.player.pos.y, mouseAngleToPlayer);
+							currentLevel.bulletListHead->next = bptr;
 							break;
 						}
 						break;
@@ -191,6 +207,39 @@ int main(){
 					currentLevel.dogRect.x = currentLevel.player.pos.x - 8;
 					currentLevel.dogRect.y = currentLevel.player.pos.y - 8;
 				}
+				
+				bullet_t* bptr_prev = NULL;
+				bullet_t* bptr = currentLevel.bulletListHead;
+				while(bptr != NULL)
+				{
+					char result = updateBullet(bptr);
+					/* printf("result: %d\n", result); */
+					if(result == 1)
+					{ // planet hit
+						if(bptr_prev == NULL)
+						{
+							bullet_t* bnext = bptr->next;
+							free(bptr);
+							currentLevel.bulletListHead = bnext;
+							bptr = bnext;
+							continue;
+						}
+						else
+						{
+							bullet_t* bnext = bptr->next;
+							free(bptr);
+							bptr_prev->next = bnext;
+							bptr = bnext;
+							continue;
+						}
+					}
+					else if (result == 2)
+					{ // dog hit :(
+						currentLevel.realPause = 1;
+					}
+					bptr_prev = bptr;
+					bptr = bptr->next;
+				}
 
 				// end update
 			}
@@ -229,6 +278,13 @@ int main(){
 			SDL_RenderCopy(renderer, textures.sheet, &textures.dogRect, &currentLevel.dogRect);
 			SDL_RenderCopy(renderer, textures.sheet, &textures.flagRect, &currentLevel.flagRect);
 
+			bullet_t* bptr = currentLevel.bulletListHead;
+			while(bptr != NULL)
+			{
+				drawBullet(renderer, bptr);
+				bptr = bptr->next;
+			}
+
 			// begin UI rendering
 
 			SDL_Rect bulletRect = {32,32,32,32};
@@ -255,6 +311,7 @@ int main(){
 			{
 				drawButton(renderer, &menuButtons[i]);
 			}
+			SDL_RenderCopy(renderer, titleTexture, NULL, &titleRect);
 			break;
 		}
 		}

@@ -111,6 +111,7 @@ void drawPlayer(SDL_Renderer* r, player_t* p)
 	char onScreen = playerRect.x+playerRect.w >= 0 && playerRect.x <= 1920 &&
 		playerRect.y+playerRect.h >= 0 && playerRect.y <= 1080;
 	SDL_RenderCopyF(r, textures.sheet, &textures.playerRect, &p->rect);
+	float indicatorMultiplier = 1;
 	if(!onScreen)
 	{
 		SDL_Rect indicatorRect = {0};

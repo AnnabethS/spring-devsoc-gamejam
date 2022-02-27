@@ -19,7 +19,7 @@ typedef struct{
 
 static void vec2fAdd(vec2f* dest, vec2f* src1, vec2f* src2);
 static float vec2fMagnitude(vec2f* v);
-static void vec2fDiff(vec2f* dest, vec2f* v1, vec2f* v2);
+static void vec2fDiff(vec2f* dest, vec2f* fromVector, vec2f* toVector);
 static float vec2fDist(vec2f* v1, vec2f* v2);
 
 static void vec2fAdd(vec2f* dest, vec2f* v1, vec2f* v2)
@@ -78,4 +78,10 @@ static void vec2fUnitVectorFromAngleDegrees(vec2f* dest, float angle)
 	dest->y = sin(angle * DEG2RAD);
 }
 
+static void vec2fUnitVectorFromVector(vec2f* dest, vec2f* src)
+{
+	float magnitude = vec2fMagnitude(src);
+	dest->x = src->x / magnitude;
+	dest->y = src->y / magnitude;
+}
 #endif

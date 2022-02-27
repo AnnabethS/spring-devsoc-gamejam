@@ -14,4 +14,9 @@ static char isColliding(vec2f* c1Pos, float c1Rad, vec2f* c2Pos, float c2Rad)
 	return vec2fDist(c1Pos, c2Pos) <= *biggestRadius;
 }
 
+static char pointInCircle(vec2f* circlePos, float circleRadius, vec2f* point)
+{
+	return vec2fDist(circlePos, point) <= circleRadius;
+}
+
 #endif

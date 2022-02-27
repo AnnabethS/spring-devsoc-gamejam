@@ -1,4 +1,5 @@
 #include "level.h"
+#include "bullet.h"
 #include "planet.h"
 #include "anna-layer.h"
 #include "player.h"
@@ -55,6 +56,30 @@ void loadLevel(int levelNum)
 		setFlag(200, 500, 4);
 		initPlayer(&currentLevel.player, 50, 50, 2);
 		break;
+	case 2:
+		loadNewPlanet(400, 800, 6);
+		loadNewPlanet(800, 400, 6);
+		setDog(800, 800, 2);
+		setFlag(900, 420, 4);
+		currentLevel.maxBullets = 6;
+		initPlayer(&currentLevel.player, 150, 150, 2);
+		break;
+	case 3:
+		loadNewPlanet(600, 500, 10);
+		loadNewPlanet(350, 800, 6);
+		setDog(600, 400, 2);
+		setFlag(450,900,4);
+		currentLevel.maxBullets = 6;
+		initPlayer(&currentLevel.player, 50, 50, 2);
+		break;
+	case 4:
+		loadNewPlanet(800, 450, 8);
+		loadNewPlanet(300, 700, 4);
+		currentLevel.maxBullets = 5;
+		setDog(1000, 450, 2);
+		setFlag(300, 450, 4);
+		initPlayer(&currentLevel.player, 200, 200, 2);
+		break;
 	default:
 		printf("cannot load level %d, does not exist yet\n"
 		       "program will likely now segfault or something\n", levelNum);
@@ -67,6 +92,7 @@ void loadLevel(int levelNum)
 	currentLevel.levelNum = levelNum;
 	currentLevel.levelWon = 0;
 	currentLevel.realPause = 0;
+	currentLevel.bulletListHead = NULL;
 }
 
 void unloadLevel()
@@ -78,6 +104,14 @@ void unloadLevel()
 		free(ptr);
 		ptr = next;
 	}
+	bullet_t* bptr = currentLevel.bulletListHead;
+	while(bptr != NULL)
+	{
+		bullet_t* next = bptr->next;
+		free(bptr);
+		bptr = next;
+	}
+	currentLevel.bulletListHead = NULL;
 	currentLevel.planetListHead = NULL;
 	currentLevel.currentBullets = 0;
 }
