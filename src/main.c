@@ -65,9 +65,17 @@ int main(){
 	const u8 gunFiredFrames = 10;
 	u8 framesSinceGunFired = 0;
 
-	int buttonAmount = 1;
-	button_t menuButtons[buttonAmount];
-	initButton(&menuButtons[0], renderer, 50, 50, 100, 50, "Level 1");
+	int levelAmount = 2;
+	button_t menuButtons[levelAmount];
+
+	for(int i=0; i < levelAmount; i++)
+	{
+		char text[10] = {0};
+		sprintf(text, "Level %d", (i+1));
+		initButton(&menuButtons[i], renderer, 50+(i*150), 50, 100, 50, text);
+	}
+
+
 	button_t winButton;
 	initButton(&winButton, renderer, SCREENWIDTH/2 - 150, SCREENHEIGHT/2 -50, 300, 100, "You win, press ENTER");
 
@@ -131,7 +139,7 @@ int main(){
 						}
 						break;
 					case SCREEN_MENU:
-						for(int i=0; i < buttonAmount; i++)
+						for(int i=0; i < levelAmount; i++)
 						{
 							if(menuButtons[i].hovered)
 							{
@@ -239,11 +247,11 @@ int main(){
 		{
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
-			for(int i=0; i < buttonAmount; i++)
+			for(int i=0; i < levelAmount; i++)
 			{
 				updateButton(&menuButtons[i], mousePos.x, mousePos.y);
 			}
-			for(int i=0; i < buttonAmount; i++)
+			for(int i=0; i < levelAmount; i++)
 			{
 				drawButton(renderer, &menuButtons[i]);
 			}

@@ -5,6 +5,7 @@
 #include "vector.h"
 #include "physics.h"
 #include "level.h"
+#include <SDL2/SDL_render.h>
 #include <math.h>
 
 #define RESTITUTION 0.5
@@ -87,7 +88,6 @@ void updatePlayer(player_t* p)
 		{
 			currentLevel.levelWon = 1;
 			currentLevel.realPause = 1;
-			printf("level won\n");
 		}
 		
 	}
@@ -107,5 +107,76 @@ void initPlayer(player_t* p, float x, float y, float textureScale)
 
 void drawPlayer(SDL_Renderer* r, player_t* p)
 {
-	SDL_RenderCopyF(r, textures.sheet, &textures.playerRect, &p->rect);
+	SDL_Rect playerRect = {(float)p->rect.x, (float)p->rect.y};
+	char onScreen = playerRect.x+playerRect.w >= 0 && playerRect.x <= 1920 &&
+		playerRect.y+playerRect.h >= 0 && playerRect.y <= 1080;
+	if(onScreen)
+		SDL_RenderCopyF(r, textures.sheet, &textures.playerRect, &p->rect);
+	else
+	{
+		SDL_Rect indicatorRect = {0};
+		indicatorRect.w = indicatorRect.h = 32;
+		float rotate = -1;
+		if (p->pos.x >= 0 && p->pos.x <= 1920)
+		{
+			if(p->pos.y <= 0)
+			{//top
+				indicatorRect.x = p->pos.x - (indicatorRect.w/(float)2);
+				indicatorRect.y = 0;
+				rotate = -90;
+			}
+			else if (p->pos.y >= 1080)
+			{//bot
+				indicatorRect.x = p->pos.x - (indicatorRect.w/(float)2);
+				indicatorRect.y = 1080 - indicatorRect.w;
+				rotate = 90;
+			}
+		}
+		else if (p->pos.y >= 0 && p->pos.y <= 1080)
+		{
+			if(p->pos.x <= 0)
+			{//left
+				indicatorRect.x = 0;
+				indicatorRect.y = p->pos.y - (indicatorRect.h/(float)2);
+				rotate = 180;
+			}
+			else if(p->pos.x >= 1920)
+			{//right
+				indicatorRect.x = 1920 - (indicatorRect.w);
+				indicatorRect.y = p->pos.y - (indicatorRect.h/(float)2);
+				rotate = 0;
+			}
+		}
+		else if (p->pos.x <= 0 && p->pos.y <= 0)
+		{ // top left
+			indicatorRect.x = 0;
+			indicatorRect.y = 0;
+			rotate = -135;
+		}
+		else if (p->pos.x >= 1920 && p->pos.y <= 0)
+		{ // top right
+			indicatorRect.x = 1920-indicatorRect.w;
+			indicatorRect.y = 0;
+			rotate = -45;
+		}
+		else if (p->pos.x <= 0 && p->pos.y >= 1080)
+		{ // bot left
+			indicatorRect.x = 0;
+			indicatorRect.y = 1080-indicatorRect.h;
+			rotate = 135;
+		}
+		else if (p->pos.x >= 1920 && p->pos.y >= 1080)
+		{ // bot right
+			indicatorRect.x = 1920-indicatorRect.w;
+			indicatorRect.y = 1080-indicatorRect.h;
+			rotate = 45;
+		}
+
+		if(rotate != -1)
+		{
+			SDL_Point centre = {indicatorRect.w/2, indicatorRect.h/2};
+			SDL_RenderCopyEx(r, textures.sheet, &textures.offScreenIndicator,
+							&indicatorRect, rotate, &centre, SDL_FLIP_NONE);
+		}
+	}
 }

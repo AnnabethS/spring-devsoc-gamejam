@@ -1,6 +1,7 @@
 #include "level.h"
 #include "planet.h"
 #include "anna-layer.h"
+#include "player.h"
 #include "textures.h"
 
 level_t currentLevel;
@@ -44,8 +45,19 @@ void loadLevel(int levelNum)
 		//loadNewPlanet(300, 700, 4);
 		currentLevel.maxBullets = 10;
 		setDog(1000, 450, 2);
-		setFlag(300, 450, 2);
+		setFlag(300, 450, 4);
 		initPlayer(&currentLevel.player, 200, 200, 2);
+		break;
+	case 1:
+		loadNewPlanet(800, 450, 16);
+		currentLevel.maxBullets = 8;
+		setDog(800, 700, 2);
+		setFlag(200, 500, 4);
+		initPlayer(&currentLevel.player, 50, 50, 2);
+		break;
+	default:
+		printf("cannot load level %d, does not exist yet\n"
+		       "program will likely now segfault or something\n", levelNum);
 		break;
 	}
 	currentLevel.playerHoldingDog = 0;
