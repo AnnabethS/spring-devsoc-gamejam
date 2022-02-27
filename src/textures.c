@@ -30,6 +30,8 @@ char loadTextures(SDL_Renderer *r)
 	setRect(&textures.gunFiredRect, 48, 0, 16, 16);
 	setRect(&textures.bgRect, 64, 0, 16, 16);
 	setRect(&textures.bulletRect, 80, 0, 16, 16);
+	setRect(&textures.dogRect, 96, 0, 16, 16);
+	setRect(&textures.flagRect, 112, 0, 16, 16);
 	return 0;
 }
 

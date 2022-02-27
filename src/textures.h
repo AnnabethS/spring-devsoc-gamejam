@@ -12,6 +12,8 @@ typedef struct{
 	SDL_Rect gunFiredRect;
 	SDL_Rect bgRect;
 	SDL_Rect bulletRect;
+	SDL_Rect dogRect;
+	SDL_Rect flagRect;
 }ts;
 
 extern ts textures;

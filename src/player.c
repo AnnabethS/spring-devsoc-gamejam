@@ -76,6 +76,21 @@ void updatePlayer(player_t* p)
 			break;
 	}
 	vec2fAdd(&p->pos, &p->pos, &p->vel);
+	if(!currentLevel.playerHoldingDog)
+	{
+		if(isColliding(&p->pos, p->radius, &currentLevel.dogLocation, currentLevel.dogRadius))
+			currentLevel.playerHoldingDog = 1;
+	}
+	else
+	{
+		if(isColliding(&p->pos, p->radius, &currentLevel.flagLocation, currentLevel.flagRadius))
+		{
+			currentLevel.levelWon = 1;
+			currentLevel.realPause = 1;
+			printf("level won\n");
+		}
+		
+	}
 	recalculateRect(p);
 }
 
