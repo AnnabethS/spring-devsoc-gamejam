@@ -110,9 +110,8 @@ void drawPlayer(SDL_Renderer* r, player_t* p)
 	SDL_Rect playerRect = {(float)p->rect.x, (float)p->rect.y};
 	char onScreen = playerRect.x+playerRect.w >= 0 && playerRect.x <= 1920 &&
 		playerRect.y+playerRect.h >= 0 && playerRect.y <= 1080;
-	if(onScreen)
-		SDL_RenderCopyF(r, textures.sheet, &textures.playerRect, &p->rect);
-	else
+	SDL_RenderCopyF(r, textures.sheet, &textures.playerRect, &p->rect);
+	if(!onScreen)
 	{
 		SDL_Rect indicatorRect = {0};
 		indicatorRect.w = indicatorRect.h = 32;
