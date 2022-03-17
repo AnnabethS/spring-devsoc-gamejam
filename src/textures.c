@@ -35,6 +35,7 @@ char loadTextures(SDL_Renderer *r)
 	setRect(&textures.offScreenIndicator, 176, 0, 16, 16);
 	setRect(&textures.normalSpeedIndicator, 128, 0, 16, 16);
 	setRect(&textures.slowSpeedIndicator, 160, 0, 16, 16);
+	setRect(&textures.circleIndicator, 224, 0, 16, 16);
 	return 0;
 }
 

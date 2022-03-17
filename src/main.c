@@ -227,6 +227,7 @@ int main(){
 				gunRect.x = gunPos.x - gunCentre.x;
 				gunRect.y = gunPos.y - gunCentre.y;
 
+
 				if(currentLevel.playerHoldingDog)
 				{
 					currentLevel.dogRect.w = currentLevel.dogRect.h = 16;

@@ -17,6 +17,7 @@ typedef struct{
 	SDL_Rect offScreenIndicator;
 	SDL_Rect normalSpeedIndicator;
 	SDL_Rect slowSpeedIndicator;
+	SDL_Rect circleIndicator;
 }ts;
 
 extern ts textures;
