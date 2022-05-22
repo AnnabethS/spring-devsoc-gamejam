@@ -41,9 +41,8 @@ jobs:
             base-devel
             git
             make
-         pacboy: >-
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-SDL2
 
-      - name: get dependencies and build project
+      - name: build project
         run: make game
