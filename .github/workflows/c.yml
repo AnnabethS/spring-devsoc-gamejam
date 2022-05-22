@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - run: sudo apt-get install libsdl2-dev
     - uses: actions/checkout@v3
     - name: make
       run: make
