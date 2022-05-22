@@ -45,6 +45,7 @@ int main(int argc, char** argv){
 	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	TTF_Init();
+    IMG_Init(IMG_INIT_PNG);
 	loadTextures(renderer);
 
 	font = TTF_OpenFont("res/Monoid-Regular.ttf", 20);
