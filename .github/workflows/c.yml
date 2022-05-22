@@ -43,8 +43,6 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-SDL2
-      - name: check folder
-        run: ls
 
       - name: build project
-        run: make
+        run: gcc src/main.c -lSDL2_image -lSDL2 -lm -lSDL2_ttf
