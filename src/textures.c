@@ -13,7 +13,7 @@ char loadTextures(SDL_Renderer *r)
 	SDL_Surface* s = IMG_Load("spritesheet.png");
 	if(s == NULL)
 	{
-		printf("failed loading image into surface: %m\n");
+		printf("failed loading image into surface: %s\n", SDL_GetError());
 		return 1;
 	}
 	textures.sheet = SDL_CreateTextureFromSurface(r, s);
