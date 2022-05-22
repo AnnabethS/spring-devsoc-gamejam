@@ -7,10 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  build-linux:
     runs-on: ubuntu-latest
-
     steps:
     - run: sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-gfx-dev
     - uses: actions/checkout@v3
@@ -30,3 +28,12 @@ jobs:
         title: "Latest Build"
         files: |
           release-linux.zip
+  build-windows:
+    runs-on: windows-os
+    steps:
+      - name: Setup MSYS2
+      - uses: msys2/setup-msys2@v2
+      - shell: msys2 {0}
+        run: |
+          pacman -Syu mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2
+          make
