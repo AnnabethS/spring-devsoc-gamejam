@@ -33,7 +33,9 @@ jobs:
     steps:
       - name: Setup MSYS2
       - uses: msys2/setup-msys2@v2
+
+      - name: get dependencies and build project
       - shell: msys2 {0}
-      - run: |
+        run: |
           pacman -Syu mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2
           make
