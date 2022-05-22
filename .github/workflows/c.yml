@@ -53,13 +53,16 @@ jobs:
 
       - name: build project
         run: make -f Makefile_win
+
+      - name: move files around for zipping
+        run: mv sdl/*.dll .
         
       - name: zip and upload game
         uses: TheDoctor0/zip-release@0.6.2
         with:
           type: 'zip'
           filename: 'release-windows.zip'
-          path: res/ sdl/ game.exe
+          path: res/ *.dll game.exe
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
