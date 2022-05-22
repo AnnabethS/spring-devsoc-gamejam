@@ -30,12 +30,18 @@ jobs:
           release-linux.zip
   build-windows:
     runs-on: windows-os
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
-      - name: Setup MSYS2
       - uses: msys2/setup-msys2@v2
+        with:
+         update: true
+         install: >-
+            base-devel
+            git
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-SDL2
 
       - name: get dependencies and build project
-      - shell: msys2 {0}
-        run: |
-          pacman -Syu mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2
-          make
+        run: make
