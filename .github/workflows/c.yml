@@ -25,7 +25,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest-linux"
         prerelease: false
-        title: "Latest Build"
+        title: "Latest Linux Build"
         files: |
           release-linux.zip
   build-windows:
@@ -68,6 +68,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest-windows"
           prerelease: false
-          title: "Latest Build"
+          title: "Latest Windows Build"
           files: |
             release-windows.zip 
