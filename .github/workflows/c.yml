@@ -43,6 +43,8 @@ jobs:
             make
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-SDL2
+      - name: check folder
+        run: ls
 
       - name: build project
         run: make game
