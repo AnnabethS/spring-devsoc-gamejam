@@ -47,4 +47,4 @@ jobs:
         run: ls
 
       - name: build project
-        run: make game
+        run: make
