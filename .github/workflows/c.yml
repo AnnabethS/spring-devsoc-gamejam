@@ -59,7 +59,7 @@ jobs:
         with:
           type: 'zip'
           filename: 'release-windows.zip'
-          path: res/ sdl/ game
+          path: res/ sdl/ game.exe
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
