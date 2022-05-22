@@ -36,7 +36,7 @@ u32 timeLeft()
 		return next_tick - now;
 }
 
-int main(){
+int main(int argc, char** argv){
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	basicSetup(SCREENWIDTH, SCREENHEIGHT,
