@@ -53,3 +53,18 @@ jobs:
 
       - name: build project
         run: make -f Makefile_win
+        
+      - name: zip and upload game
+        uses: TheDoctor0/zip-release@0.6.2
+        with:
+          type: 'zip'
+          filename: 'release-windows.zip'
+          path: res/ sdl/ game
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-windows"
+          prerelease: false
+          title: "Latest Build"
+          files: |
+            release-windows.zip 
