@@ -34,6 +34,9 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
+      - name: checkout repo
+      - uses: actions/checkout@v3
+      - name: setup msys2
       - uses: msys2/setup-msys2@v2
         with:
          update: true
@@ -45,4 +48,4 @@ jobs:
             mingw-w64-x86_64-SDL2
 
       - name: build project
-        run: gcc src/main.c -lSDL2_image -lSDL2 -lm -lSDL2_ttf
+        run: make
