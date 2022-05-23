@@ -55,7 +55,7 @@ jobs:
         run: make -f Makefile_win
 
       - name: pack up dlls from msys 
-        run: cp /mingw64/bin/SDL2* /mingw64/bin/zlib1.dll /mingw64/bin/libpng16-16.dll .
+        run: cp /mingw64/bin/SDL2* /mingw64/bin/zlib1.dll /mingw64/bin/libpng16-16.dll /mingw64/bin/libjpeg-8.dll /mingw64/bin/libtiff-5.dll /mingw64/bin/libwebp-7.dll /mingw64/bin/libfreetype-6.dll /mingw64/bin/libharfbuzz-0.dll
         
       - name: zip and upload game
         uses: TheDoctor0/zip-release@0.6.2
