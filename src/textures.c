@@ -10,7 +10,7 @@ local void setRect(SDL_Rect* r, int x, int y, int w, int h);
 
 char loadTextures(SDL_Renderer *r)
 {
-	SDL_Surface* s = IMG_Load("spritesheet.png");
+	SDL_Surface* s = IMG_Load("res/spritesheet.png");
 	if(s == NULL)
 	{
 		printf("failed loading image into surface: %s\n", SDL_GetError());
