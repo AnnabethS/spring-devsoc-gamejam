@@ -54,8 +54,8 @@ jobs:
       - name: build project
         run: make -f Makefile_win
 
-      - name: move files around for zipping
-        run: mv sdl/*.dll .
+      - name: pack up dlls from msys 
+        run: cp /mingw64/bin/SDL2* zlib1.dll libpng16-16.dll .
         
       - name: zip and upload game
         uses: TheDoctor0/zip-release@0.6.2
